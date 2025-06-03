@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"nttplatform/internal/apis/authentication"
 	"nttplatform/internal/common"
 	"nttplatform/internal/middlewares"
 	"os"
@@ -14,12 +15,19 @@ func main() {
 
 	var warpMux middlewares.WarpMux = middlewares.WarpMux{
 		Mux: server,
-		Context: common.Context{
-			Logger: logger,
+		Context: &common.Context{
+			Logger:      logger,
+			IdService:   &common.UUIDService{},
+			SubContexts: make(map[string]common.SubContext),
 		},
 	}
 
+	warpMux.Context.AddSubContext("authentication", authentication.NewAuthenticationContext(warpMux.Context))
+
 	warpMux.Register(middlewares.RequestLogging)
+
+	warpMux.AddHandler(http.MethodPost, "/register", middlewares.RequestBodyValidator(authentication.RegisterHandler))
+	warpMux.AddHandler(http.MethodPost, "/login", middlewares.RequestBodyValidator(authentication.LoginHandler))
 
 	logger.Info("Starting the server on port 8080")
 

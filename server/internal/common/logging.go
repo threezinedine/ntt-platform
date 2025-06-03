@@ -11,6 +11,7 @@ func NewLogrusLogger() *LogrusLogger {
 	log.SetFormatter(&log.JSONFormatter{
 		DisableTimestamp: true,
 	})
+	log.SetLevel(log.DebugLevel)
 	return &LogrusLogger{}
 }
 
