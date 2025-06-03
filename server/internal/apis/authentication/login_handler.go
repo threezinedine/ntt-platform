@@ -14,12 +14,12 @@ func LoginHandler(ctx *common.Context, w http.ResponseWriter, r *http.Request, l
 
 	if err != nil {
 		ctx.Logger.Error(fmt.Sprintf("User does not exist: %s", err.Error()))
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("User does not exist"))
 		return
 	}
 
-	if user.Password != loginReq.Password {
+	if !authContext.PasswordService.CheckPassword(user.Password, loginReq.Password) {
 		ctx.Logger.Error("Invalid password")
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("Invalid password"))

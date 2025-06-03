@@ -10,13 +10,22 @@ import (
 func RegisterHandler(ctx *common.Context, w http.ResponseWriter, r *http.Request, registerReq *RegisterRequest) {
 	authContext := ctx.GetSubContext("authentication").(*AuthenticationContext)
 
+	hashedPassword, err := authContext.PasswordService.HashPassword(registerReq.Password)
+
+	if err != nil {
+		ctx.Logger.Error(fmt.Sprintf("Failed to hash password: %s", err.Error()))
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Failed to hash password"))
+		return
+	}
+
 	user := &model.User{
 		Id:       ctx.IdService.GenerateId(),
 		Username: registerReq.Username,
-		Password: registerReq.Password,
+		Password: hashedPassword,
 	}
 
-	err := authContext.Repository.RegisterNewUser(user)
+	err = authContext.Repository.RegisterNewUser(user)
 
 	if err != nil {
 		ctx.Logger.Error(fmt.Sprintf("Failed to register new user: %s", err.Error()))
@@ -26,6 +35,5 @@ func RegisterHandler(ctx *common.Context, w http.ResponseWriter, r *http.Request
 	}
 
 	ctx.Logger.Info(fmt.Sprintf("Registering user: %s %s", registerReq.Username, registerReq.Password))
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("User registered successfully"))
+	w.WriteHeader(http.StatusCreated)
 }

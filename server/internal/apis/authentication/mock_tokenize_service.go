@@ -22,8 +22,8 @@ func (s *MockTokenizeService) ValidateAccessToken(accessToken string, user *mode
 	return nil
 }
 
-func (s *MockTokenizeService) Refresh(refreshToken string) (string, string, error) {
-	return s.AccessToken, s.RefreshToken, nil
+func (s *MockTokenizeService) Refresh(refreshToken string, user *model.User) (string, error) {
+	return s.AccessToken, nil
 }
 
 func (s *MockTokenizeService) SetTokens(accessToken string, refreshToken string) {

@@ -34,3 +34,25 @@ func (l *LogrusLogger) Debug(msg string, args ...interface{}) {
 func (l *LogrusLogger) Fatal(msg string, args ...interface{}) {
 	log.WithFields(log.Fields{"args": args}).Fatal(msg)
 }
+
+type NoLogger struct {
+}
+
+func NewNoLogger() *NoLogger {
+	return &NoLogger{}
+}
+
+func (l *NoLogger) Info(msg string, args ...interface{}) {
+}
+
+func (l *NoLogger) Error(msg string, args ...interface{}) {
+}
+
+func (l *NoLogger) Warn(msg string, args ...interface{}) {
+}
+
+func (l *NoLogger) Debug(msg string, args ...interface{}) {
+}
+
+func (l *NoLogger) Fatal(msg string, args ...interface{}) {
+}
