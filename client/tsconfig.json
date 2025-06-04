@@ -16,5 +16,5 @@
 		}
 	},
 	"include": ["web/**/*"],
-	"exclude": ["node_modules", "app/**/*"]
+	"exclude": ["node_modules", "app/**/*", "web/assets/**/*"]
 }
