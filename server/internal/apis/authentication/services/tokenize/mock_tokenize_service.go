@@ -30,6 +30,13 @@ func (s *MockTokenizeService) ValidateAccessToken(accessToken string) (string, e
 	return s.UserId, nil
 }
 
+func (s *MockTokenizeService) ValidateRefreshToken(refreshToken string) (string, error) {
+	if refreshToken != s.RefreshToken {
+		return "", errors.New("invalid refresh token")
+	}
+	return s.UserId, nil
+}
+
 func (s *MockTokenizeService) Refresh(refreshToken string, user *model.User) (string, error) {
 	return s.AccessToken, nil
 }

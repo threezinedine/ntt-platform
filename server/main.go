@@ -40,6 +40,8 @@ func main() {
 	warpMux.AddHandler(http.MethodPost, "/login", middlewares.RequestBodyValidator(authentication.LoginHandler))
 	warpMux.AddHandler(http.MethodGet, "/user",
 		authentication.AuthenticationMiddleware(authentication.GetUserInfoHandler))
+	warpMux.AddHandler(http.MethodPost, "/refresh",
+		middlewares.RequestBodyValidator(authentication.RefreshTokenHandler))
 
 	logger.Info(fmt.Sprintf("Starting the server on port %s", os.Getenv("PORT")))
 

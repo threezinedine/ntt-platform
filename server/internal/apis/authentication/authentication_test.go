@@ -31,6 +31,18 @@ func newTestFixture(id string) *common.Context {
 	return &context
 }
 
+func registerUser(t *testing.T, context *common.Context, username string, password string) {
+	registerReq := RegisterRequest{
+		Username: username,
+		Password: password,
+	}
+
+	writer, request := utils.CreateRequestT(t, http.MethodPost, "/register", registerReq)
+	RegisterHandler(context, writer, request, &registerReq)
+
+	assert.Equal(t, http.StatusCreated, writer.Code)
+}
+
 func TestLoginWithoutUser(t *testing.T) {
 	context := newTestFixture("test-user-id")
 
@@ -92,6 +104,39 @@ func TestRequestUserInfoWithInvalidAccessToken(t *testing.T) {
 	writer, request := utils.CreateRequest(t, http.MethodGet, "/user")
 	request.Header.Set("Authorization", "invalid-access-token")
 	AuthenticationMiddleware(GetUserInfoHandler)(context, writer, request)
+}
+
+func TestRefreshToken(t *testing.T) {
+	context := newTestFixture("test-user-id")
+	authContext := context.GetSubContext("authentication").(*AuthenticationContext)
+	authContext.TokenizeService.(*tokenize.MockTokenizeService).SetTokens("new-test-access-token", "test-refresh-token")
+	registerUser(t, context, "testuser", "testpassword")
+
+	refreshTokenReq := RefreshTokenRequest{
+		AccessToken:  "test-access-token",
+		RefreshToken: "test-refresh-token",
+	}
+
+	// get user failed with the test-access-token
+	writer, request := utils.CreateRequest(t, http.MethodGet, "/user")
+	request.Header.Set("Authorization", refreshTokenReq.AccessToken)
+	AuthenticationMiddleware(GetUserInfoHandler)(context, writer, request)
+	assert.Equal(t, http.StatusUnauthorized, writer.Code)
+
+	writer, request = utils.CreateRequestT(t, http.MethodPost, "/refresh", refreshTokenReq)
+	RefreshTokenHandler(context, writer, request, &refreshTokenReq)
+
+	assert.Equal(t, http.StatusOK, writer.Code)
+
+	response := utils.GetResponse[RefreshTokenResponse](t, writer)
+	assert.NotEmpty(t, response.AccessToken)
+
+	writer, request = utils.CreateRequest(t, http.MethodGet, "/user")
+	request.Header.Set("Authorization", response.AccessToken)
+	AuthenticationMiddleware(GetUserInfoHandler)(context, writer, request)
+	assert.Equal(t, http.StatusOK, writer.Code)
+	user := utils.GetResponse[model.VisualUser](t, writer)
+	assert.Equal(t, "testuser", user.Username)
 }
 
 func TestLoginWithInvalidPassword(t *testing.T) {
