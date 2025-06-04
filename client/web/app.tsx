@@ -6,8 +6,8 @@ import { Color } from "./common";
 const App: React.FC = () => {
 	return (
 		<div>
-			<h1 className="underline m-3">Hello World Server</h1>
-			<Button color={Color.Secondary}>Click me</Button>
+			<h1 className="underline m-2">Hello World Server</h1>
+			<Button color={Color.Primary}>Click me</Button>
 			<Form fields={[]} />
 		</div>
 	);

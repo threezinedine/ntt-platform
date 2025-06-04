@@ -11,7 +11,8 @@
 		"build:watch": "webpack --watch",
 		"electron:dev": "tsc -p app/tsconfig.json && electron .",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"cypress:open": "cypress open --browser chrome --e2e"
 	},
 	"dependencies": {
 		"clsx": "^2.1.1",
@@ -33,6 +34,7 @@
 		"@types/react": "^19.1.6",
 		"@types/react-dom": "^19.1.5",
 		"babel-loader": "^10.0.0",
+		"cypress": "^14.4.1",
 		"storybook": "^9.0.4",
 		"tailwindcss": "^4.1.8",
 		"tsconfig-paths-webpack-plugin": "^4.2.0",

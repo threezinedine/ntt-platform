@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
 	);
 
 	const colorClass = clsx({
-		"bg-slate-100": color === Color.Primary,
+		"bg-gray-800": color === Color.Primary,
 		"bg-slate-200": color === Color.Secondary,
 		"bg-slate-300": color === Color.Success,
 		"bg-slate-400": color === Color.Warning,
