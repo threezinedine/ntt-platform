@@ -12,3 +12,11 @@ type UUIDService struct {
 func (s *UUIDService) GenerateId() string {
 	return uuid.New().String()
 }
+
+type MockIDService struct {
+	Id string
+}
+
+func (s *MockIDService) GenerateId() string {
+	return s.Id
+}

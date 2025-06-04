@@ -19,11 +19,7 @@ func RegisterHandler(ctx *common.Context, w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	user := &model.User{
-		Id:       ctx.IdService.GenerateId(),
-		Username: registerReq.Username,
-		Password: hashedPassword,
-	}
+	user := model.CreateNewUser(ctx.IdService.GenerateId(), registerReq.Username, hashedPassword)
 
 	err = authContext.Repository.RegisterNewUser(user)
 

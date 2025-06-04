@@ -1,4 +1,4 @@
-package authentication
+package authentication_repository
 
 import (
 	"database/sql"
@@ -16,7 +16,14 @@ type SqlRepository struct {
 }
 
 func NewSqlRepository(ctx *common.Context) *SqlRepository {
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/ntt_platform")
+	db, err := sql.Open("mysql",
+		fmt.Sprintf(
+			"%s:%s@tcp(%s:%s)/%s",
+			os.Getenv("DB_USER"),
+			os.Getenv("DB_PASSWORD"),
+			os.Getenv("DB_HOST"),
+			os.Getenv("DB_PORT"),
+			os.Getenv("DB_NAME")))
 
 	if err != nil {
 		ctx.Logger.Error("Failed to connect to database: %v", err.Error())
@@ -32,7 +39,8 @@ func NewSqlRepository(ctx *common.Context) *SqlRepository {
 }
 
 func (r *SqlRepository) RegisterNewUser(user *model.User) error {
-	_, err := r.db.Exec("INSERT INTO users (id, username, password) VALUES (?, ?, ?)", user.Id, user.Username, user.Password)
+	_, err := r.db.Exec("INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?)",
+		user.Id, user.Username, user.Password, user.Role)
 
 	if err != nil {
 		r.ctx.Logger.Error(fmt.Sprintf("Sql command execution failed: %s", err.Error()))
@@ -49,7 +57,22 @@ func (r *SqlRepository) GetUserByUsername(username string) (*model.User, error) 
 
 	var user model.User
 
-	err := row.Scan(&user.Id, &user.Username, &user.Password)
+	err := row.Scan(&user.Id, &user.Username, &user.Password, &user.Role)
+
+	if err != nil {
+		r.ctx.Logger.Error(fmt.Sprintf("Sql command execution failed: %s", err.Error()))
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *SqlRepository) GetUserById(id string) (*model.User, error) {
+	row := r.db.QueryRow("SELECT * FROM users WHERE id = ?", id)
+
+	var user model.User
+
+	err := row.Scan(&user.Id, &user.Username, &user.Password, &user.Role)
 
 	if err != nil {
 		r.ctx.Logger.Error(fmt.Sprintf("Sql command execution failed: %s", err.Error()))

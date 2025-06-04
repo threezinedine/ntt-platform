@@ -1,17 +1,25 @@
 package authentication
 
-import "nttplatform/internal/common"
+import (
+	model "nttplatform/internal/apis"
+	"nttplatform/internal/apis/authentication/services/password"
+	authentication_repository "nttplatform/internal/apis/authentication/services/repository"
+	"nttplatform/internal/apis/authentication/services/tokenize"
+	"nttplatform/internal/common"
+)
 
 type AuthenticationContext struct {
-	Repository      IRepository
-	TokenizeService TokenizeService
-	PasswordService PasswordService
+	Repository      authentication_repository.Repository
+	TokenizeService tokenize.TokenizeService
+	PasswordService password.PasswordService
+	IsAuthenticated bool
+	User            *model.User
 }
 
 func NewAuthenticationContext(ctx *common.Context) *AuthenticationContext {
-	Repository := NewSqlRepository(ctx)
-	TokenizeService := NewMockTokenizeService()
-	HashPasswordService := NewBcryptPasswordService()
+	Repository := authentication_repository.NewSqlRepository(ctx)
+	TokenizeService := tokenize.NewRealTokenizeService()
+	HashPasswordService := password.NewBcryptPasswordService()
 
 	return &AuthenticationContext{
 		Repository:      Repository,

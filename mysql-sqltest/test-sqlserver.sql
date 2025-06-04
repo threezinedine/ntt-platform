@@ -5,7 +5,7 @@ drop table users;
 create table users (
 	id varchar(36) primary key,
     username varchar(50) unique,
-    password varchar(50),
+    password varchar(100),
     role varchar(20)
 );
 

@@ -1,4 +1,4 @@
-package authentication
+package authentication_repository
 
 import (
 	"errors"
@@ -6,23 +6,32 @@ import (
 )
 
 type InMemoryRepository struct {
-	users []*model.User
+	Users []*model.User
 }
 
 func NewInMemoryRepository() *InMemoryRepository {
 	return &InMemoryRepository{
-		users: []*model.User{},
+		Users: []*model.User{},
 	}
 }
 
 func (r *InMemoryRepository) RegisterNewUser(user *model.User) error {
-	r.users = append(r.users, user)
+	r.Users = append(r.Users, user)
 	return nil
 }
 
 func (r *InMemoryRepository) GetUserByUsername(username string) (*model.User, error) {
-	for _, user := range r.users {
+	for _, user := range r.Users {
 		if user.Username == username {
+			return user, nil
+		}
+	}
+	return nil, errors.New("user not found")
+}
+
+func (r *InMemoryRepository) GetUserById(id string) (*model.User, error) {
+	for _, user := range r.Users {
+		if user.Id == id {
 			return user, nil
 		}
 	}

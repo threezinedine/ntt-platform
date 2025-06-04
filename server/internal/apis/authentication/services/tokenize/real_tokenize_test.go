@@ -1,4 +1,4 @@
-package authentication
+package tokenize
 
 import (
 	model "nttplatform/internal/apis"

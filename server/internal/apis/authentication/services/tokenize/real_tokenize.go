@@ -1,4 +1,4 @@
-package authentication
+package tokenize
 
 import (
 	"errors"
@@ -11,6 +11,10 @@ import (
 )
 
 type RealTokenizeService struct {
+}
+
+func NewRealTokenizeService() *RealTokenizeService {
+	return &RealTokenizeService{}
 }
 
 func (s *RealTokenizeService) generateToken(user *model.User, expTime int64) (string, error) {

@@ -2,14 +2,23 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"log"
 	"net/http"
 	"nttplatform/internal/apis/authentication"
 	"nttplatform/internal/common"
 	"nttplatform/internal/middlewares"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	var server *http.ServeMux = http.NewServeMux()
 	var logger *common.LogrusLogger = common.NewLogrusLogger()
 
@@ -25,13 +34,16 @@ func main() {
 	warpMux.Context.AddSubContext("authentication", authentication.NewAuthenticationContext(warpMux.Context))
 
 	warpMux.Register(middlewares.RequestLogging)
+	warpMux.Register(middlewares.OutputJsonMiddleware)
 
 	warpMux.AddHandler(http.MethodPost, "/register", middlewares.RequestBodyValidator(authentication.RegisterHandler))
 	warpMux.AddHandler(http.MethodPost, "/login", middlewares.RequestBodyValidator(authentication.LoginHandler))
+	warpMux.AddHandler(http.MethodGet, "/user",
+		authentication.AuthenticationMiddleware(authentication.GetUserInfoHandler))
 
-	logger.Info("Starting the server on port 8080")
+	logger.Info(fmt.Sprintf("Starting the server on port %s", os.Getenv("PORT")))
 
-	var err error = http.ListenAndServe(":8080", warpMux.Mux)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), warpMux.Mux)
 
 	if errors.Is(err, http.ErrServerClosed) {
 		logger.Info("Server closed")
