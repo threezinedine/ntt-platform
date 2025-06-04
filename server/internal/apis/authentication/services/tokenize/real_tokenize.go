@@ -101,7 +101,13 @@ func (s *RealTokenizeService) Refresh(refreshToken string, user *model.User) (st
 		return "", err
 	}
 
-	newAccessToken, err := s.generateToken(user, time.Now().Add(time.Minute*15).Unix(), "ACCESS_SECRET_KEY")
+	minutes, err := strconv.Atoi(os.Getenv("ACCESS_TOKEN_EXP_IN_MINUTES"))
+	if err != nil {
+		minutes = 15 // Default to 15 minutes if parsing fails
+	}
+	expTime := time.Now().Add(time.Minute * time.Duration(minutes)).Unix()
+
+	newAccessToken, err := s.generateToken(user, expTime, "ACCESS_SECRET_KEY")
 
 	if err != nil {
 		return "", err
