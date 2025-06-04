@@ -1,10 +1,10 @@
 {
 	"name": "nttplatform-client",
 	"version": "0.0.1",
-	"main": "app/main.js",
+	"main": "electron-dist/main.js",
 	"scripts": {
 		"compile": "tsc",
-		"electron:dev": "electron ."
+		"electron:dev": "tsc -p app/tsconfig.json && electron ."
 	},
 	"dependencies": {
 		"electron": "^36.3.2"
