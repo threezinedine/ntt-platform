@@ -1,15 +1,36 @@
 {
-	"name": "nttplatform-client",
-	"version": "0.0.1",
-	"main": "electron-dist/main.js",
-	"scripts": {
-		"compile": "tsc",
-		"electron:dev": "tsc -p app/tsconfig.json && electron ."
-	},
-	"dependencies": {
-		"electron": "^36.3.2"
-	},
-	"devDependencies": {
-		"typescript": "^5.8.3"
-	}
+  "name": "nttplatform-client",
+  "version": "0.0.1",
+  "main": "electron-dist/main.js",
+  "scripts": {
+    "compile": "tsc",
+    "web:dev": "webpack serve",
+    "build": "webpack",
+    "electron:dev": "tsc -p app/tsconfig.json && electron .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "electron": "^36.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@storybook/addon-onboarding": "^9.0.4",
+    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
+    "@storybook/react-webpack5": "^9.0.4",
+    "@types/mithril": "^2.2.7",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "babel-loader": "^10.0.0",
+    "storybook": "^9.0.4",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
 }

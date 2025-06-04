@@ -1,12 +1,19 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"module": "commonjs",
+		"module": "nodenext",
 		"outDir": "./web-dist",
+		"moduleResolution": "nodenext",
 		"rootDir": "./",
+		"jsx": "react",
 		"strict": true,
 		"esModuleInterop": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
+		"paths": {
+			"@/*": ["./web/*"]
+		}
 	},
 	"include": ["web/**/*"],
 	"exclude": ["node_modules", "app/**/*"]

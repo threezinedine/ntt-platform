@@ -7,7 +7,7 @@ function createWindow() {
 		height: 600,
 	});
 
-	mainWindow.loadFile(path.join(app.getAppPath(), "index.html"));
+	mainWindow.loadFile(path.join(app.getAppPath(), "public/index.html"));
 }
 
 app.whenReady().then(() => {
