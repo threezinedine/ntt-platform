@@ -21,7 +21,7 @@ export interface FormField {
 
 export default interface FormProps {
 	fields: FormField[];
-	onSubmit?: (data: FormData, setLoading?: (state: boolean) => void) => void;
+	onSubmit?: (data: FormData, setLoading: (state: boolean) => void) => void;
 	className?: string;
 }
 

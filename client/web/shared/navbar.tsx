@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import Button from '@/components/button';
 import { Color } from '@/common';
 import Logo from './logo';
+import { useAuthContext } from '@/features/authenticate';
+import Dropdown from '@/components/dropdown';
 
 const NavLinkItem: React.FC<{
 	href: string;
@@ -96,8 +98,8 @@ const UserAvatar = () => (
 
 const Navbar: React.FC = () => {
 	const navigator = useNavigate();
+	const { isLoggedIn, loggedOut } = useAuthContext();
 
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	const navLinks = [
@@ -174,32 +176,46 @@ const Navbar: React.FC = () => {
 					<div className='hidden md:flex items-center space-x-3'>
 						{isLoggedIn ? (
 							<div className='relative group'>
-								<UserAvatar />
-								<button
-									// onClick={handleLogout}
-									className={clsx(
-										'absolute',
-										'top-full',
-										'right-0',
-										'mt-2',
-										'w-max',
-										'bg-white',
-										'dark:bg-slate-700',
-										'text-slate-700',
-										'dark:text-slate-200',
-										'px-4',
-										'py-2',
-										'rounded-md',
-										'shadow-lg',
-										'text-sm',
-										'opacity-0',
-										'group-hover:opacity-100',
-										'transition-opacity',
-										'duration-200',
-										'hover:bg-slate-100 dark:hover:bg-slate-600',
-									)}>
-									Logout
-								</button>
+								<Dropdown
+									trigger={<UserAvatar />}
+									itemMap={[
+										[
+											{
+												label: 'Profile',
+												icon: 'fa-solid fa-user',
+												closeOnClick: true,
+												onClick: () => {
+													navigator('/profile');
+													window.scrollTo({
+														top: 0,
+														behavior: 'smooth',
+													});
+												},
+											},
+										],
+										[
+											{
+												label: 'Logout',
+												icon: 'fa-solid fa-right-from-bracket',
+												special: true,
+												onClick: () => {
+													loggedOut();
+													localStorage.removeItem(
+														'access_token',
+													);
+													localStorage.removeItem(
+														'refresh_token',
+													);
+													navigator('/login');
+													window.scrollTo({
+														top: 0,
+														behavior: 'smooth',
+													});
+												},
+											},
+										],
+									]}
+								/>
 							</div>
 						) : (
 							<>
@@ -277,7 +293,25 @@ const Navbar: React.FC = () => {
 					<div className='mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 space-y-3'>
 						{isLoggedIn ? (
 							<div className='flex items-center space-x-3'>
-								<UserAvatar />
+								<Dropdown
+									trigger={<UserAvatar />}
+									itemMap={[
+										[
+											{
+												label: 'Profile',
+												icon: 'fa-solid fa-user',
+											},
+										],
+										[
+											{
+												label: 'Logout',
+												icon: 'fa-solid fa-right-from-bracket',
+												special: true,
+											},
+										],
+									]}
+								/>
+
 								{/* <button
 									onClick={() => {
 										handleLogout();
@@ -315,9 +349,7 @@ const Navbar: React.FC = () => {
 					</div>
 					{/* Toggle Logged In State (for demonstration) */}
 					<div className='mt-6 pt-4 border-t border-slate-200 dark:border-slate-700'>
-						<button
-							onClick={() => setIsLoggedIn(!isLoggedIn)}
-							className='w-full px-4 py-2 text-sm font-medium rounded-md bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors duration-200'>
+						<button className='w-full px-4 py-2 text-sm font-medium rounded-md bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors duration-200'>
 							Toggle Login State (Demo)
 						</button>
 					</div>
@@ -325,9 +357,7 @@ const Navbar: React.FC = () => {
 			)}
 			{/* Demo Toggle Button outside navbar for easier testing */}
 			<div className='fixed bottom-4 right-4 z-50 md:hidden'>
-				<button
-					onClick={() => setIsLoggedIn(!isLoggedIn)}
-					className='px-4 py-2 bg-purple-600 text-white rounded-lg shadow-lg hover:bg-purple-700 transition-colors duration-200 text-sm'>
+				<button className='px-4 py-2 bg-purple-600 text-white rounded-lg shadow-lg hover:bg-purple-700 transition-colors duration-200 text-sm'>
 					Toggle Login (Demo)
 				</button>
 			</div>

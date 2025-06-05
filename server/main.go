@@ -34,6 +34,7 @@ func main() {
 	warpMux.Context.AddSubContext("authentication", authentication.NewAuthenticationContext(warpMux.Context))
 
 	warpMux.Register(middlewares.RequestLogging)
+	warpMux.Register(middlewares.CorsMiddleware)
 	warpMux.Register(middlewares.OutputJsonMiddleware)
 
 	warpMux.AddHandler(http.MethodPost, "/register", middlewares.RequestBodyValidator(authentication.RegisterHandler))

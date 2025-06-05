@@ -7,7 +7,6 @@ import { Size } from '@/common';
 
 type Errors = { [key: string]: string | null };
 
-// --- DynamicForm Component ---
 const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 	const [formData, setFormData] = useState<FormData>({});
 	const [errors, setErrors] = useState<Errors>({});
@@ -168,7 +167,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 			)}>
 			{fields.map((field) => {
 				const fieldError = errors[field.name];
-				const inputId = `form-field-${field.name}`;
+				const inputId = field.name;
 				let inputElement: React.ReactNode;
 
 				const commonProps = {
@@ -357,3 +356,4 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 };
 
 export default Form;
+export type { FormData };

@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Route, Routes, HashRouter } from 'react-router';
 
-import { Home, About, Login, Redirect, Blog, Register } from '@/pages';
+import { Home, About, Login, Redirect, Blog, Register, Profile } from '@/pages';
 import { Layout } from '@/shared';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
@@ -32,6 +32,14 @@ root.render(
 				element={
 					<Layout>
 						<Blog />
+					</Layout>
+				}
+			/>
+			<Route
+				path='/profile'
+				element={
+					<Layout>
+						<Profile />
 					</Layout>
 				}
 			/>
