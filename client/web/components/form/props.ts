@@ -21,7 +21,8 @@ export interface FormField {
 
 export default interface FormProps {
 	fields: FormField[];
-	onSubmit?: (data: FormData) => void;
+	onSubmit?: (data: FormData, setLoading?: (state: boolean) => void) => void;
+	className?: string;
 }
 
 export type { ValidatorFunction, FormData };

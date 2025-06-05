@@ -18,6 +18,11 @@ const NavLinkItem: React.FC<{
 		if (onClick) onClick();
 
 		navigator(href);
+
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
 	};
 
 	return (
@@ -134,6 +139,10 @@ const Navbar: React.FC = () => {
 						<Logo
 							onClick={() => {
 								navigator('/');
+								window.scrollTo({
+									top: 0,
+									behavior: 'smooth',
+								});
 							}}
 						/>
 					</div>
@@ -199,6 +208,10 @@ const Navbar: React.FC = () => {
 									outline
 									onClick={() => {
 										navigator('/login');
+										window.scrollTo({
+											top: 0,
+											behavior: 'smooth',
+										});
 									}}>
 									Login
 								</Button>
@@ -207,6 +220,10 @@ const Navbar: React.FC = () => {
 									outline
 									onClick={() => {
 										navigator('/register');
+										window.scrollTo({
+											top: 0,
+											behavior: 'smooth',
+										});
 									}}>
 									Register
 								</Button>

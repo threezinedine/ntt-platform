@@ -8,9 +8,10 @@ import { Size } from '@/common';
 type Errors = { [key: string]: string | null };
 
 // --- DynamicForm Component ---
-const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
+const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 	const [formData, setFormData] = useState<FormData>({});
 	const [errors, setErrors] = useState<Errors>({});
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const initialData: FormData = {};
@@ -99,7 +100,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 
 	const handleSubmit = () => {
 		if (validateForm()) {
-			onSubmit?.(formData);
+			onSubmit?.(formData, setLoading);
 		}
 	};
 
@@ -163,6 +164,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 				'dark:bg-gray-800',
 				'shadow-xl',
 				'rounded-lg',
+				className,
 			)}>
 			{fields.map((field) => {
 				const fieldError = errors[field.name];
@@ -344,7 +346,10 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 					</div>
 				);
 			})}
-			<Button onClick={handleSubmit} size={Size.FullWidth}>
+			<Button
+				onClick={handleSubmit}
+				size={Size.FullWidth}
+				loading={loading}>
 				Submit
 			</Button>
 		</div>

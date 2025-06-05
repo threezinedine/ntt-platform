@@ -3,6 +3,8 @@ import Navbar from './navbar';
 import Footer from './footer';
 import clsx from 'clsx';
 
+import Toast from '@/components/toast';
+
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	return (
 		<div>
@@ -11,6 +13,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 				{children}
 			</div>
 			<Footer />
+			<Toast />
 		</div>
 	);
 };

@@ -13,6 +13,10 @@ const Login: React.FC = () => {
 				'mx-auto',
 				'py-8',
 				'select-none',
+				'flex',
+				'items-center',
+				'justify-center',
+				'flex-col',
 			)}>
 			<div
 				className={clsx(
@@ -24,6 +28,7 @@ const Login: React.FC = () => {
 					'sm:p-10',
 					'transition-colors',
 					'duration-300',
+					'min-w-[500px]',
 				)}>
 				<div className={clsx('text-center', 'mb-8')}>
 					<h1
@@ -60,6 +65,12 @@ const Login: React.FC = () => {
 					Don't have an account?{' '}
 					<a
 						href='#register' // Replace with your actual registration page path
+						onClick={() => {
+							window.scrollTo({
+								top: 0,
+								behavior: 'smooth',
+							});
+						}}
 						className={clsx(
 							'font-medium',
 							'text-indigo-600',

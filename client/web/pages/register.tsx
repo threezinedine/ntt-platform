@@ -13,6 +13,10 @@ const Register: React.FC = () => {
 				'mx-auto',
 				'py-8',
 				'select-none',
+				'flex',
+				'flex-col',
+				'items-center',
+				'justify-center',
 			)}>
 			<div
 				className={clsx(
@@ -24,6 +28,7 @@ const Register: React.FC = () => {
 					'sm:p-10',
 					'transition-colors',
 					'duration-300',
+					'min-w-[500px]',
 				)}>
 				<div className={clsx('text-center', 'mb-8')}>
 					<h1
@@ -60,6 +65,12 @@ const Register: React.FC = () => {
 					Already have an account?{' '}
 					<a
 						href='#login' // Replace with your actual registration page path
+						onClick={() => {
+							window.scrollTo({
+								top: 0,
+								behavior: 'smooth',
+							});
+						}}
 						className={clsx(
 							'font-medium',
 							'text-indigo-600',

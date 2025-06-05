@@ -98,3 +98,23 @@ export const WithIcon: Story = {
 		],
 	},
 };
+
+export const LoadingSubmitButton: Story = {
+	args: {
+		onSubmit: (data: FormData, setLoading?: (state: boolean) => void) => {
+			setLoading?.(true);
+			setTimeout(() => {
+				setLoading?.(false);
+			}, 2000);
+		},
+		fields: [
+			{
+				label: 'Name',
+				name: 'name',
+				placeholder: 'Enter your name',
+				type: 'text',
+				validators: [lengthValidator(5, 20)],
+			},
+		],
+	},
+};
