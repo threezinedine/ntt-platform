@@ -76,3 +76,25 @@ export const Default: Story = {
 		],
 	},
 };
+
+export const WithIcon: Story = {
+	args: {
+		fields: [
+			{
+				label: 'Name',
+				name: 'name',
+				placeholder: 'Enter your name',
+				icon: 'fa-solid fa-user',
+				type: 'text',
+				validators: [lengthValidator(5, 20)],
+			},
+			{
+				label: 'Upload',
+				name: 'upload',
+				placeholder: 'Upload your file',
+				type: 'file',
+				validators: [],
+			},
+		],
+	},
+};

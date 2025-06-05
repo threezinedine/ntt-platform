@@ -191,6 +191,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 								'py-2',
 								'form-select',
 								'appearance-none',
+								field.icon && 'pl-10',
 							)}>
 							{field.options?.map((option) => (
 								<option
@@ -255,12 +256,14 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 							'hover:file:bg-indigo-100',
 							'dark:hover:file:bg-gray-500',
 							'cursor-pointer',
+							field.icon && 'pl-10',
 						);
 					} else {
 						finalInputClasses = clsx(
 							finalInputClasses,
 							'px-3',
 							'py-2',
+							field.icon && 'pl-10',
 						);
 					}
 					inputElement = (
@@ -275,6 +278,36 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 							className={finalInputClasses}
 							placeholder={field.placeholder || ''}
 						/>
+					);
+				}
+
+				let wrappedInputElement = inputElement;
+
+				if (field.icon) {
+					wrappedInputElement = (
+						<div className={clsx('relative', 'mb-6')}>
+							<div
+								className={clsx(
+									'absolute',
+									'inset-y-0',
+									'left-0',
+									'pl-3',
+									'flex',
+									'items-center',
+									'pointer-events-none',
+								)}>
+								<i
+									className={clsx(
+										field.icon,
+										'h-5',
+										'w-5',
+										'text-slate-400',
+										'dark:text-slate-500',
+									)}
+								/>
+							</div>
+							{inputElement}
+						</div>
 					);
 				}
 
@@ -294,7 +327,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
 								{field.label}
 							</label>
 						)}
-						{inputElement}
+						{wrappedInputElement}
 						{fieldError && (
 							<p
 								id={`${inputId}-error`}

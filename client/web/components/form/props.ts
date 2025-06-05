@@ -15,6 +15,7 @@ export interface FormField {
 	name: string;
 	options?: string[]; // only for select field
 	placeholder?: string;
+	icon?: string;
 	validators?: ValidatorFunction[];
 }
 
