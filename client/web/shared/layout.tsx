@@ -1,11 +1,16 @@
 import React from 'react';
 import Navbar from './navbar';
+import Footer from './footer';
+import clsx from 'clsx';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	return (
 		<div>
 			<Navbar />
-			<div>{children}</div>
+			<div className={clsx('min-h-screen', 'bg-slate-700')}>
+				{children}
+			</div>
+			<Footer />
 		</div>
 	);
 };
