@@ -140,3 +140,4 @@ dist
 storybook-static
 
 public/css/tailwind.css
+public/js/main.js
