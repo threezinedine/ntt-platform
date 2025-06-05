@@ -18,7 +18,8 @@
 		"clsx": "^2.1.1",
 		"electron": "^36.3.2",
 		"react": "^19.1.0",
-		"react-dom": "^19.1.0"
+		"react-dom": "^19.1.0",
+		"react-router": "^7.6.2"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.27.2",
