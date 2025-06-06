@@ -18,7 +18,14 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 	isAuth = false,
 }) => {
 	const navigator = useNavigate();
-	const { loggedIn, loggedOut, isLoggedIn } = useAuthContext();
+	const {
+		loggedIn,
+		loggedOut,
+		isLoggedIn,
+		shouldRefreshToken,
+		cleanRefreshToken,
+		refreshToken,
+	} = useAuthContext();
 	const addToast = useToastContext((state) => state.addToast);
 
 	const validateAuth = () => {
@@ -37,6 +44,14 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 	};
 
 	useEffect(() => {
+		refreshToken();
+	}, []);
+
+	useEffect(() => {
+		if (!shouldRefreshToken) {
+			return;
+		}
+
 		const access_token = localStorage.getItem('access_token');
 		const refresh_token = localStorage.getItem('refresh_token');
 
@@ -57,6 +72,20 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 				if (res.status === 200) {
 					loggedIn();
 				} else {
+					refreshTokenRequest({
+						access_token,
+						refresh_token,
+					} as RefreshTokenRequest).then((res) => {
+						if (res.status === 200) {
+							loggedIn();
+							localStorage.setItem(
+								'access_token',
+								res.data.access_token,
+							);
+						} else {
+							loggedOut();
+						}
+					});
 					loggedOut();
 				}
 			})
@@ -76,8 +105,11 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 					}
 				});
 				loggedOut();
+			})
+			.finally(() => {
+				cleanRefreshToken();
 			});
-	}, []);
+	}, [shouldRefreshToken]);
 
 	useEffect(() => {
 		validateAuth();
