@@ -5,7 +5,11 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router';
 
 import Toast, { useToastContext } from '@/components/toast';
-import { useAuthContext } from '@/features/authenticate';
+import {
+	refreshTokenRequest,
+	useAuthContext,
+	RefreshTokenRequest,
+} from '@/features/authenticate';
 import { request } from '@/utils';
 import UpTop from '@/components/uptop';
 
@@ -57,6 +61,20 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 				}
 			})
 			.catch((err) => {
+				refreshTokenRequest({
+					access_token,
+					refresh_token,
+				} as RefreshTokenRequest).then((res) => {
+					if (res.status === 200) {
+						loggedIn();
+						localStorage.setItem(
+							'access_token',
+							res.data.access_token,
+						);
+					} else {
+						loggedOut();
+					}
+				});
 				loggedOut();
 			});
 	}, []);

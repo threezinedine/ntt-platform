@@ -2,9 +2,9 @@ import React from 'react';
 import Form, { FormData } from '@/components/form';
 import { lengthValidator } from '@/components/form/validators';
 import { useToastContext } from '@/components/toast';
-import { request } from '@/utils';
 import { useAuthContext } from '@/features/authenticate';
 import { useNavigate } from 'react-router';
+import { LoginRequest, loginRequest } from '../utils/authRequest';
 
 const LoginForm: React.FC = () => {
 	const addToast = useToastContext((state) => state.addToast);
@@ -16,8 +16,7 @@ const LoginForm: React.FC = () => {
 		setLoading: (state: boolean) => void,
 	) => {
 		setLoading(true);
-		request
-			.post('/login', data)
+		loginRequest(data as LoginRequest)
 			.then((res) => {
 				if (res.status === 200) {
 					addToast({
