@@ -38,7 +38,7 @@ root.render(
 			<Route
 				path='/profile'
 				element={
-					<Layout>
+					<Layout isAuth>
 						<Profile />
 					</Layout>
 				}

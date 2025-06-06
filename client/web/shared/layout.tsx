@@ -2,13 +2,34 @@ import React, { useEffect } from 'react';
 import Navbar from './navbar';
 import Footer from './footer';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router';
 
-import Toast from '@/components/toast';
+import Toast, { useToastContext } from '@/components/toast';
 import { useAuthContext } from '@/features/authenticate';
 import { request } from '@/utils';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const { loggedIn, loggedOut } = useAuthContext();
+const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
+	children,
+	isAuth = false,
+}) => {
+	const navigator = useNavigate();
+	const { loggedIn, loggedOut, isLoggedIn } = useAuthContext();
+	const addToast = useToastContext((state) => state.addToast);
+
+	const validateAuth = () => {
+		if (!isAuth) {
+			return;
+		}
+
+		if (!isLoggedIn) {
+			addToast({
+				message: 'You are not authorized to access this page',
+				type: 'error',
+				duration: 3000,
+			});
+			navigator('/login');
+		}
+	};
 
 	useEffect(() => {
 		const access_token = localStorage.getItem('access_token');
@@ -39,6 +60,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 			});
 	}, []);
 
+	useEffect(() => {
+		validateAuth();
+	}, [isLoggedIn]);
+
 	return (
 		<div>
 			<Navbar />
@@ -46,9 +71,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 				{children}
 			</div>
 			<Footer />
-			<div>
-				<Toast />
-			</div>
+			<Toast />
 		</div>
 	);
 };
