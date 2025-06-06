@@ -11,4 +11,5 @@ export default interface ButtonProps {
 	leadingIcon?: string;
 	trailingIcon?: string;
 	onClick?: () => void;
+	testId?: string;
 }

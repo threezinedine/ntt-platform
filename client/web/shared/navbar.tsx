@@ -8,12 +8,13 @@ import { useAuthContext } from '@/features/authenticate';
 import Dropdown from '@/components/dropdown';
 
 const NavLinkItem: React.FC<{
+	testId: string;
 	href: string;
 	children: React.ReactNode;
 	icon?: string;
 	onClick?: () => void;
 	isActive: boolean;
-}> = ({ href, children, icon = '', isActive, onClick = () => {} }) => {
+}> = ({ href, children, icon = '', isActive, onClick = () => {}, testId }) => {
 	const navigator = useNavigate();
 
 	const handleClick = () => {
@@ -29,6 +30,7 @@ const NavLinkItem: React.FC<{
 
 	return (
 		<div
+			data-testid={testId}
 			onClick={handleClick}
 			className={clsx(
 				'flex',
@@ -151,6 +153,7 @@ const Navbar: React.FC = () => {
 
 					{/* Middle Section: Navigation Links (Desktop) */}
 					<div
+						data-testid='navlinks-container'
 						className={clsx(
 							'hidden',
 							window.location.hash.substring(1) !== '/login' &&
@@ -160,6 +163,7 @@ const Navbar: React.FC = () => {
 						)}>
 						{navLinks.map((link) => (
 							<NavLinkItem
+								testId={`navlink-${link.name}`}
 								key={link.name}
 								href={link.href}
 								icon={link.icon}
@@ -220,6 +224,7 @@ const Navbar: React.FC = () => {
 						) : (
 							<>
 								<Button
+									testId='navlink-Login'
 									color={Color.Primary}
 									outline
 									onClick={() => {
@@ -232,6 +237,7 @@ const Navbar: React.FC = () => {
 									Login
 								</Button>
 								<Button
+									testId='navlink-Register'
 									color={Color.Secondary}
 									outline
 									onClick={() => {
@@ -276,6 +282,7 @@ const Navbar: React.FC = () => {
 					<div className='space-y-2'>
 						{navLinks.map((link) => (
 							<NavLinkItem
+								testId={`navlink-${link.name}`}
 								key={link.name}
 								href={link.href}
 								icon={link.icon}

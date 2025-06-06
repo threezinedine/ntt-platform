@@ -64,7 +64,8 @@ const Register: React.FC = () => {
 					)}>
 					Already have an account?{' '}
 					<a
-						href='#login' // Replace with your actual registration page path
+						data-testid='form-login-link'
+						href='#/login' // Replace with your actual registration page path
 						onClick={() => {
 							window.scrollTo({
 								top: 0,

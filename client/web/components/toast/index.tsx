@@ -41,7 +41,7 @@ const Toast: React.FC = () => {
 				'fixed',
 				'select-none',
 				'bottom-4',
-				'right-4',
+				'left-4',
 				'space-y-3',
 				'min-w-80',
 			)}

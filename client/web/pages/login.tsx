@@ -64,7 +64,8 @@ const Login: React.FC = () => {
 					)}>
 					Don't have an account?{' '}
 					<a
-						href='#register' // Replace with your actual registration page path
+						data-testid='form-register-link'
+						href='#/register' // Replace with your actual registration page path
 						onClick={() => {
 							window.scrollTo({
 								top: 0,

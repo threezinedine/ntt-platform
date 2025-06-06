@@ -13,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
 	outline = false,
 	leadingIcon = '',
 	trailingIcon = '',
+	testId,
 	onClick,
 	...props
 }) => {
@@ -284,6 +285,7 @@ const Button: React.FC<ButtonProps> = ({
 
 	return (
 		<button
+			data-testid={testId}
 			className={clsx(
 				'relative',
 				colorClass,
