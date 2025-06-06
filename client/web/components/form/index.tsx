@@ -154,7 +154,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 	};
 
 	return (
-		<form
+		<div
 			className={clsx(
 				'space-y-6',
 				'p-4',
@@ -269,6 +269,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 					}
 					inputElement = (
 						<input
+							data-testid={`${field.name}`}
 							type={field.type}
 							{...commonProps}
 							value={
@@ -346,12 +347,13 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 				);
 			})}
 			<Button
+				testId={'submit'}
 				onClick={handleSubmit}
 				size={Size.FullWidth}
 				loading={loading}>
 				Submit
 			</Button>
-		</form>
+		</div>
 	);
 };
 

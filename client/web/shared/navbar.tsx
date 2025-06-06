@@ -76,6 +76,7 @@ const NavLinkItem: React.FC<{
 
 const UserAvatar = () => (
 	<div
+		data-testid='avatar'
 		className={clsx(
 			'flex',
 			'items-center',

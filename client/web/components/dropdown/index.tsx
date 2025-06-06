@@ -120,6 +120,7 @@ const Dropdown: React.FC<DropdownProps> = ({ itemMap, trigger }) => {
 										return (
 											<div
 												key={itemIndex}
+												data-testid={`dropdown-item-${item.label.toLowerCase()}`}
 												onClick={handleClick}
 												className={clsx(
 													baseLayoutClasses,

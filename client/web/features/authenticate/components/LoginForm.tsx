@@ -32,6 +32,10 @@ const LoginForm: React.FC = () => {
 						res.data.refresh_token,
 					);
 					navigator('/');
+					window.scrollTo({
+						top: 0,
+						behavior: 'smooth',
+					});
 				}
 			})
 			.catch((error) => {

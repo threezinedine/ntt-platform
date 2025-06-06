@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 import { visit, assertUrl, assertOnTopPage } from '../utils';
+import { WAIT_TIME_FOR_SCROLL } from '../data';
 
 const SCROLL_TO_Y = 100;
 const SCROLL_TO_X = 0;
-const WAIT_TIME_FOR_SCROLL = 200;
 
 describe('Navigate', () => {
 	it('should navigate to the home page', () => {

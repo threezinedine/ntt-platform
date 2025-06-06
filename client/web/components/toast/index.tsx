@@ -48,7 +48,10 @@ const Toast: React.FC = () => {
 			aria-live='polite'
 			aria-atomic='true'>
 			{messages.map((message, index) => (
-				<div key={index} className={`toast ${message.type}`}>
+				<div
+					data-testid={`toast-message-${message.type}`}
+					key={index}
+					className={`toast ${message.type}`}>
 					<div
 						className={clsx(
 							'flex',
