@@ -154,7 +154,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 	};
 
 	return (
-		<div
+		<form
 			className={clsx(
 				'space-y-6',
 				'p-4',
@@ -351,7 +351,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, className = '' }) => {
 				loading={loading}>
 				Submit
 			</Button>
-		</div>
+		</form>
 	);
 };
 

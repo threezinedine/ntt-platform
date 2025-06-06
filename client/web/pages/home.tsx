@@ -2,14 +2,24 @@ import React from 'react';
 import Button from '@/components/button';
 import { useNavigate } from 'react-router';
 import { useToastContext } from '@/components/toast';
+import Form from '@/components/form';
 
 const Home: React.FC = () => {
 	const navigator = useNavigate();
-	const { addToast } = useToastContext();
+	const addToast = useToastContext((state) => state.addToast);
 
 	return (
 		<div>
-			<h1>Home</h1>
+			<Form
+				fields={[
+					{
+						label: 'Username',
+						name: 'username',
+						type: 'text',
+						placeholder: 'Enter your username',
+					},
+				]}
+			/>
 			<Button onClick={() => navigator('/about')}>Click me</Button>
 			<Button
 				onClick={() =>
