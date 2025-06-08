@@ -29,7 +29,7 @@ export type RefreshTokenResponse = {
 const refreshTokenRequest = (
 	data: RefreshTokenRequest,
 ): Promise<AxiosResponse<RefreshTokenResponse>> => {
-	return request.post<RefreshTokenResponse>('/refresh-token', data);
+	return request.post<RefreshTokenResponse>('/refresh', data);
 };
 
 export { loginRequest, refreshTokenRequest };
