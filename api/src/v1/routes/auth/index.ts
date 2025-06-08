@@ -4,7 +4,7 @@ import { LoginResponse, RegisterResponse, UserResponse } from './response';
 import WrapRouter from '../../../wrap_router';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
-import { ErrorResponse } from '@/services/response';
+import { ErrorResponse } from '@/response';
 import { TokenInfo } from '@/services/tokenGen';
 import authMiddleware from './auth_middleware';
 

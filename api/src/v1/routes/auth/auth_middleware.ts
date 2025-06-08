@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import Context from '../../../context';
 import ServiceContainer from '../../../services';
 import WrapRouter from '../../../wrap_router';
-import { ErrorResponse } from '@/services/response';
+import { ErrorResponse } from '@/response';
 import { TokenInfo } from '@/services/tokenGen';
 import { Middleware } from '../../../middleware';
 
