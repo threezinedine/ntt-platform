@@ -6,6 +6,10 @@ import { Color } from '@/common';
 import Logo from './logo';
 import { useAuthContext } from '@/features/authenticate';
 import Dropdown from '@/components/dropdown';
+import {
+	ACCESS_TOKEN_KEY,
+	REFRESH_TOKEN_KEY,
+} from '@/features/authenticate/data/constants';
 
 const NavLinkItem: React.FC<{
 	testId: string;
@@ -206,10 +210,10 @@ const Navbar: React.FC = () => {
 												onClick: () => {
 													loggedOut();
 													localStorage.removeItem(
-														'accessTokenKey',
+														ACCESS_TOKEN_KEY,
 													);
 													localStorage.removeItem(
-														'refreshTokenKey',
+														REFRESH_TOKEN_KEY,
 													);
 													navigator('/login');
 													window.scrollTo({

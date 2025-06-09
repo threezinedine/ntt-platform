@@ -5,6 +5,7 @@ import { useToastContext } from '@/components/toast';
 import { useAuthContext } from '@/features/authenticate';
 import { useNavigate } from 'react-router';
 import { LoginRequest, loginRequest } from '../utils/authRequest';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../data/constants';
 
 const LoginForm: React.FC = () => {
 	const addToast = useToastContext((state) => state.addToast);
@@ -26,11 +27,11 @@ const LoginForm: React.FC = () => {
 					});
 					loggedIn();
 					localStorage.setItem(
-						'accessTokenKey',
+						ACCESS_TOKEN_KEY,
 						res.data.accessToken,
 					);
 					localStorage.setItem(
-						'refreshTokenKey',
+						REFRESH_TOKEN_KEY,
 						res.data.refreshToken,
 					);
 					navigator('/');

@@ -12,6 +12,10 @@ import {
 } from '@/features/authenticate';
 import { request } from '@/utils';
 import UpTop from '@/components/uptop';
+import {
+	ACCESS_TOKEN_KEY,
+	REFRESH_TOKEN_KEY,
+} from '@/features/authenticate/data/constants';
 
 const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 	children,
@@ -52,12 +56,12 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 			return;
 		}
 
-		const accessToken = localStorage.getItem('accessTokenKey');
-		const refreshToken = localStorage.getItem('refreshTokenKey');
+		const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+		const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
 
 		if (accessToken === null || refreshToken === null) {
-			localStorage.removeItem('accessTokenKey');
-			localStorage.removeItem('refreshTokenKey');
+			localStorage.removeItem(ACCESS_TOKEN_KEY);
+			localStorage.removeItem(REFRESH_TOKEN_KEY);
 			loggedOut();
 			return;
 		}
@@ -80,7 +84,7 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 						if (res.status === 200) {
 							loggedIn();
 							localStorage.setItem(
-								'accessTokenKey',
+								ACCESS_TOKEN_KEY,
 								res.data.accessToken,
 							);
 						} else {
@@ -98,7 +102,7 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 					if (res.status === 200) {
 						loggedIn();
 						localStorage.setItem(
-							'accessTokenKey',
+							ACCESS_TOKEN_KEY,
 							res.data.accessToken,
 						);
 					} else {
