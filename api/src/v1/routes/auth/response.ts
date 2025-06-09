@@ -10,3 +10,7 @@ export type UserResponse = {
 	username: string;
 	role: 'admin' | 'user';
 };
+
+export type RefreshResponse = {
+	accessToken: string;
+};

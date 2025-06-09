@@ -7,6 +7,7 @@ import ServiceContainer from './services';
 import { BcryptHash } from './services/passwordHash';
 import { TokenGen } from './services/tokenGen';
 import Context from './context';
+import cors from 'cors';
 
 class Application {
 	public app: express.Application;
@@ -23,6 +24,13 @@ class Application {
 	setup() {
 		this.app.use(logger('dev'));
 		this.app.use(express.json());
+		this.app.use(
+			cors({
+				origin: '*',
+				allowedHeaders: ['Content-Type', 'Authorization', 'Language'],
+				methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+			}),
+		);
 	}
 
 	setupRoutes() {

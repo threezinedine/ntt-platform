@@ -7,29 +7,29 @@ export type LoginRequest = {
 };
 
 export type LoginResponse = {
-	access_token: string;
-	refresh_token: string;
+	accessToken: string;
+	refreshToken: string;
 };
 
 const loginRequest = (
 	data: LoginRequest,
 ): Promise<AxiosResponse<LoginResponse>> => {
-	return request.post<LoginResponse>('/login', data);
+	return request.post<LoginResponse>('v1/auth/login', data);
 };
 
 export type RefreshTokenRequest = {
-	access_token: string;
-	refresh_token: string;
+	accessToken: string;
+	refreshToken: string;
 };
 
 export type RefreshTokenResponse = {
-	access_token: string;
+	accessToken: string;
 };
 
 const refreshTokenRequest = (
 	data: RefreshTokenRequest,
 ): Promise<AxiosResponse<RefreshTokenResponse>> => {
-	return request.post<RefreshTokenResponse>('/refresh', data);
+	return request.post<RefreshTokenResponse>('v1/auth/refresh', data);
 };
 
 export { loginRequest, refreshTokenRequest };

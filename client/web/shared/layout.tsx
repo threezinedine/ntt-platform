@@ -52,20 +52,21 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 			return;
 		}
 
-		const access_token = localStorage.getItem('access_token');
-		const refresh_token = localStorage.getItem('refresh_token');
+		const accessToken = localStorage.getItem('accessTokenKey');
+		const refreshToken = localStorage.getItem('refreshTokenKey');
 
-		if (access_token === null || refresh_token === null) {
-			localStorage.removeItem('access_token');
-			localStorage.removeItem('refresh_token');
+		if (accessToken === null || refreshToken === null) {
+			localStorage.removeItem('accessTokenKey');
+			localStorage.removeItem('refreshTokenKey');
 			loggedOut();
+			return;
 		}
 
 		// verify access token
 		request
-			.get('/user', {
+			.get('/v1/auth/user', {
 				headers: {
-					Authorization: access_token,
+					Authorization: `Bearer ${accessToken}`,
 				},
 			})
 			.then((res) => {
@@ -73,14 +74,14 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 					loggedIn();
 				} else {
 					refreshTokenRequest({
-						access_token,
-						refresh_token,
+						accessToken: accessToken,
+						refreshToken: refreshToken,
 					} as RefreshTokenRequest).then((res) => {
 						if (res.status === 200) {
 							loggedIn();
 							localStorage.setItem(
-								'access_token',
-								res.data.access_token,
+								'accessTokenKey',
+								res.data.accessToken,
 							);
 						} else {
 							loggedOut();
@@ -91,14 +92,14 @@ const Layout: React.FC<{ children: React.ReactNode; isAuth?: boolean }> = ({
 			})
 			.catch((err) => {
 				refreshTokenRequest({
-					access_token,
-					refresh_token,
+					accessToken: accessToken,
+					refreshToken: refreshToken,
 				} as RefreshTokenRequest).then((res) => {
 					if (res.status === 200) {
 						loggedIn();
 						localStorage.setItem(
-							'access_token',
-							res.data.access_token,
+							'accessTokenKey',
+							res.data.accessToken,
 						);
 					} else {
 						loggedOut();

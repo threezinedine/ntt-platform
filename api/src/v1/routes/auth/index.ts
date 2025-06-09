@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
-import { LoginRequest, RegisterRequest } from './requests';
-import { LoginResponse, RegisterResponse, UserResponse } from './response';
+import { LoginRequest, RefreshRequest, RegisterRequest } from './requests';
+import {
+	LoginResponse,
+	RefreshResponse,
+	RegisterResponse,
+	UserResponse,
+} from './response';
 import WrapRouter from '../../../wrap_router';
 import { User } from './user';
 import { v4 as uuidv4 } from 'uuid';
@@ -112,6 +117,53 @@ router.get(
 			username: router.context.user?.username,
 			role: router.context.user?.role,
 		} as UserResponse);
+	},
+);
+
+router.post(
+	'/refresh',
+	[],
+	async (
+		router: WrapRouter,
+		req: Request<RefreshRequest>,
+		res: Response<RefreshResponse | ErrorResponse>,
+	) => {
+		let userInfo: TokenInfo;
+
+		try {
+			userInfo =
+				await router.serviceContainer.tokenGen.verifyRefreshToken(
+					req.body.refreshToken,
+				);
+		} catch (error) {
+			console.error(error);
+			res.status(401).send({
+				message: 'Invalid refresh token',
+			} as ErrorResponse);
+			return;
+		}
+
+		const user = await router.serviceContainer.database.getUserById(
+			userInfo.userId,
+		);
+
+		if (!user) {
+			res.status(401).send({
+				message: 'User not found',
+			} as ErrorResponse);
+			return;
+		}
+
+		const accessToken =
+			await router.serviceContainer.tokenGen.generateAccessToken({
+				userId: user.id,
+				username: user.username,
+				role: user.role,
+			});
+
+		res.send({
+			accessToken,
+		} as RefreshResponse);
 	},
 );
 

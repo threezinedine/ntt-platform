@@ -40,6 +40,7 @@ class TokenGen implements TokenGenService {
 	}
 
 	verifyRefreshToken(token: string): Promise<TokenInfo> {
+		console.log(token, JWT_SECRET_CONFIG.refreshTokenSecret);
 		return Promise.resolve(
 			jwt.verify(
 				token,
