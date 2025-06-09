@@ -16,9 +16,6 @@ class Application {
 
 	constructor() {
 		this.app = express();
-		this.setup();
-		this.preRun();
-		this.setupRoutes();
 	}
 
 	setup() {
@@ -47,9 +44,6 @@ class Application {
 		this.app.listen(PORT, () => {
 			console.log(`Server is running on port ${PORT}`);
 		});
-
-		await this.postRun();
-		console.log('Server is down');
 	}
 
 	async preRun() {

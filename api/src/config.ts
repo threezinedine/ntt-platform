@@ -22,5 +22,3 @@ export const JWT_SECRET_CONFIG = {
 		process.env.REFRESH_TOKEN_SCRET_KEY || 'refresh_token_secret',
 	refreshTokenExpiresIn: Number(process.env.REFRESH_TOKEN_EXP_TIME) || 100,
 };
-
-console.log(JWT_SECRET_CONFIG);
