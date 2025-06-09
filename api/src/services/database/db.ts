@@ -1,3 +1,4 @@
+import Blog from '../../v1/routes/blog/blog';
 import { User } from '../../v1/routes/auth/user';
 
 export default interface DatabaseService {
@@ -12,4 +13,6 @@ export default interface DatabaseService {
 	createNewUser(user: User): Promise<void>;
 	getUserByUsername(username: string): Promise<User>;
 	getUserById(id: string): Promise<User>;
+
+	getAllBlogs(limit: number, offset: number): Promise<Blog[]>;
 }

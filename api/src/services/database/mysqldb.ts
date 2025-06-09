@@ -1,7 +1,8 @@
 import DatabaseService from './db';
 import { MYSQL_DB_CONFIG } from '../../config';
 import mysql from 'mysql2/promise';
-import { User } from '@/v1/routes/auth/user';
+import { User } from '../../v1/routes/auth/user';
+import Blog from '../../v1/routes/blog/blog';
 
 class MySQLDB implements DatabaseService {
 	private connection: mysql.Connection;
@@ -38,22 +39,72 @@ class MySQLDB implements DatabaseService {
                 username varchar(50) NOT NULL UNIQUE,
                 password varchar(255) NOT NULL,
                 role varchar(50) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`,
+		);
+
+		await this.connection.execute(
+			`CREATE TABLE blogs (
+				id varchar(36) PRIMARY KEY,
+				authorId varchar(36) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+				title varchar(600) NOT NULL,
+				description varchar(1000) NOT NULL,
+				content text NOT NULL,
+				createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+			)`,
+		);
+
+		await this.connection.execute(
+			`CREATE TABLE comments (
+				id varchar(36) PRIMARY KEY,
+				blogId varchar(36) NOT NULL REFERENCES blogs(id) ON DELETE CASCADE,
+				ownerId varchar(36) REFERENCES users(id) ON DELETE SET NULL,
+				parentId varchar(36) REFERENCES comments(id) ON DELETE CASCADE,
+				content text NOT NULL,
+				createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+			)`,
+		);
+
+		await this.connection.execute(
+			`CREATE TABLE commment_reactions (
+				id varchar(36) PRIMARY KEY,
+				commentId varchar(36) NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+				userId varchar(36) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+				reaction int NOT NULL,
+				createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+			)`,
+		);
+
+		await this.connection.execute(
+			`CREATE TABLE blog_reactions (
+				id varchar(36) PRIMARY KEY,
+				blogId varchar(36) NOT NULL REFERENCES blogs(id) ON DELETE CASCADE,
+				userId varchar(36) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+				reaction int NOT NULL,
+				createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+			)`,
 		);
 	}
 
 	async down(): Promise<void> {
 		console.log('Downing MySQL database');
 
+		await this.connection.execute(
+			`DROP TABLE IF EXISTS commment_reactions`,
+		);
+		await this.connection.execute(`DROP TABLE IF EXISTS blog_reactions`);
+		await this.connection.execute(`DROP TABLE IF EXISTS comments`);
+		await this.connection.execute(`DROP TABLE IF EXISTS blogs`);
 		await this.connection.execute(`DROP TABLE IF EXISTS users`);
 	}
 
 	// users
 	async createNewUser(user: User): Promise<void> {
 		await this.connection.execute(
-			`INSERT INTO users (id, username, password, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`,
+			`INSERT INTO users (id, username, password, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)`,
 			[
 				user.id,
 				user.username,
@@ -79,6 +130,16 @@ class MySQLDB implements DatabaseService {
 			[id],
 		);
 		return rows[0] as User;
+	}
+
+	async getAllBlogs(limit: number, offset: number): Promise<Blog[]> {
+		const [rows] = await this.connection.execute(
+			`SELECT * FROM blogs
+				ORDER BY createdAt DESC
+				LIMIT ${limit}
+				OFFSET ${offset}`,
+		);
+		return rows as Blog[];
 	}
 }
 
