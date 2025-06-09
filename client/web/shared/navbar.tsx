@@ -206,10 +206,10 @@ const Navbar: React.FC = () => {
 												onClick: () => {
 													loggedOut();
 													localStorage.removeItem(
-														'access_token',
+														'accessTokenKey',
 													);
 													localStorage.removeItem(
-														'refresh_token',
+														'refreshTokenKey',
 													);
 													navigator('/login');
 													window.scrollTo({
